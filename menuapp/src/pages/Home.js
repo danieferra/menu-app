@@ -14,7 +14,7 @@ function Home() {
                 <Link to={'/pedir'} className='col-6' style={{padding:'10px',textAlign:'center',textDecoration:'none',color:'#1e1e1e',fontWeight:'bold'}}>
                 <div style={{backgroundColor:'#efefef',padding:'20px',borderRadius:'12px'}}>Registar pedidos</div>
                 </Link>
-                <Link to={'/pedidos'} className='col-6' style={{padding:'10px',textAlign:'center',textDecoration:'none',color:'#1e1e1e',fontWeight:'bold'}}>
+                <Link to={'/verpedidos'} className='col-6' style={{padding:'10px',textAlign:'center',textDecoration:'none',color:'#1e1e1e',fontWeight:'bold'}}>
                 <div style={{backgroundColor:'#efefef',padding:'20px',borderRadius:'12px'}}>Ver pedidos</div>
                 </Link>
                 </div>
