@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styles from './Waiting.module.css';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
@@ -112,6 +112,7 @@ function Waiting() {
                 <div className='text-center p-5'>
                     <h2 className='fw-bold'>Pedido não encontrado</h2>
                     <p style={{ fontSize: 'large' }}>Por favor, verifique o número do pedido e tente novamente.</p>
+                    <Link to={'/'}><button className='btn btn-dark'>Voltar</button></Link>
                 </div>
             </div>
         );
