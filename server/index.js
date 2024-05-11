@@ -7,7 +7,7 @@ const cors = require('cors');
 
 // express app
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3001;
 // Allow requests from your frontend origin
 app.use(cors({
   origin: ['http://localhost:3000','http://0.0.0.0:3000','http://192.168.1.242:3000']  // Adjust if your frontend host/port differs

@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import styles from './Waiting.module.css';
 
-const host = process.env.REACT_APP_HOST || 'localhost';
-const port = process.env.REACT_APP_PORT || 5000;
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 function Waiting() {
     const location = useLocation();
@@ -77,8 +76,8 @@ function Waiting() {
 
         const fetchStatus = async () => {
             try {
-                const response = await fetch(`http://${host}:${port}/pedidos/status/${pedidoNumero}`);
-                console.log(`http://${host}:${port}/pedidos/status/${pedidoNumero}`)
+                const response = await fetch(`${API_URL}/pedidos/status/${pedidoNumero}`);
+                console.log(`${API_URL}/pedidos/status/${pedidoNumero}`)
                 if (!response.ok) {
                     throw new Error('Failed to fetch status');
                 }

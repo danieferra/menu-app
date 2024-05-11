@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import FullScreenSpinner from "../components/FullScreenSpinner";
-const host = process.env.HOST || 'localhost';
-const port = process.env.PORT || 5000;
-
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 function Pedidos() {
   const [pedidos, setPedidos] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -10,7 +8,7 @@ function Pedidos() {
 
   // Function to fetch pedidos
   const fetchPedidos = () => {
-    fetch(`http://${host}:${port}/pedidos`)
+    fetch(`${API_URL}/pedidos`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -38,7 +36,7 @@ function Pedidos() {
 
   const updateStatus = async (id) => {
     setIsLoading(true);
-    fetch(`http://${host}:${port}/pedidos/${id}/status`, {
+    fetch(`${API_URL}/pedidos/${id}/status`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ estado: true })
