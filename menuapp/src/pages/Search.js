@@ -43,6 +43,7 @@ function Search() {
                         onChange={handleChangeNumero}
                         value={numero}
                         placeholder='Nº do pedido'
+                        type='number'
                     />
                     <button className="btn btn-dark mt-4" onClick={handleSearch}>Procurar</button>
                 </div>

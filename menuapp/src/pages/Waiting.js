@@ -11,6 +11,7 @@ function Waiting() {
     const [pedidoStatus, setPedidoStatus] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [currentIconIndex, setCurrentIconIndex] = useState(0);
+    const [is404, setIs404] = useState(false); // New state for 404
     const [error, setError] = useState(null);
     const [frases, setFrases] = useState([
         'Quem espera sempre alcança.',
