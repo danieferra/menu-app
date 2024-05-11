@@ -1,0 +1,9 @@
+menuapp/node_modules
+server/node_modules
+
+menuapp/.env
+server/.env
+
+menuapp/build
+.DS_Store
+*.log

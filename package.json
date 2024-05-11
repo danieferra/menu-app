@@ -1,0 +1,24 @@
+{
+  "name": "menuapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "heroku-postbuild": "cd menuapp && npm install && npm run build",
+    "client": "cd menuapp && npm start",
+    "server": "cd server && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^7.0.0"
+  },
+  "engines": {
+    "node": "18.x",
+    "npm":"9.5.1"
+  }
+  
+}
