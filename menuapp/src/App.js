@@ -18,7 +18,7 @@ function App() {
     <Routes>
       <Route path='/' element={<Search />} />
       <Route path='/home' element={<Home />} />    
-      <Route path='/pedidos' element={<Pedidos />} />
+      <Route path='/verpedidos' element={<Pedidos />} />
       <Route path='/pedir' element={<Menu />} />
       <Route path='/waiting' element={<Waiting />}/>
       <Route path='/editarMenu' element={<EditarMenu/>} />
