@@ -60,8 +60,8 @@ function Waiting() {
         "https://cdn.lordicon.com/qvyppzqz.json"
     ]);
 
-    // Function to shuffle an array
-    const shuffle = (array) => {
+     // Function to shuffle an array
+     const shuffle = (array) => {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [array[i], array[j]] = [array[j], array[i]]; // swap elements
@@ -77,7 +77,10 @@ function Waiting() {
         const fetchStatus = async () => {
             try {
                 const response = await fetch(`${API_URL}/pedidos/status/${pedidoNumero}`);
-                console.log(`${API_URL}/pedidos/status/${pedidoNumero}`)
+                if (response.status === 404) {
+                    setIs404(true); // Set 404 error state
+                    return;
+                }
                 if (!response.ok) {
                     throw new Error('Failed to fetch status');
                 }
@@ -86,14 +89,8 @@ function Waiting() {
 
                 // Only update phrases and icons if pedidoStatus is false
                 if (!data.estado) {
-                    setCurrentIndex(prevIndex => {
-                        // Increment or reset index
-                        return (prevIndex + 1) % frases.length;
-                    });
-                    setCurrentIconIndex(prevIndex => {
-                        // Increment or reset index
-                        return (prevIndex + 1) % icons.length;
-                    });
+                    setCurrentIndex((prevIndex) => (prevIndex + 1) % frases.length);
+                    setCurrentIconIndex((prevIndex) => (prevIndex + 1) % icons.length);
                 }
             } catch (error) {
                 setError(error.message);
@@ -105,7 +102,19 @@ function Waiting() {
             const interval = setInterval(fetchStatus, 10000);
             return () => clearInterval(interval);
         }
-    }, [pedidoNumero, frases.length, icons.length]); // Depend on frases.length and icons.length to trigger re-setup after shuffling
+    }, [pedidoNumero, frases.length, icons.length]);
+
+    // Handle 404 page rendering
+    if (is404) {
+        return (
+            <div className={styles.animatedGradient}>
+                <div className='text-center p-5'>
+                    <h2 className='fw-bold'>Pedido não encontrado</h2>
+                    <p style={{ fontSize: 'large' }}>Por favor, verifique o número do pedido e tente novamente.</p>
+                </div>
+            </div>
+        );
+    }
 
     if (error) return <div>Error: {error}</div>;
 
@@ -114,19 +123,19 @@ function Waiting() {
             <div className='text-center p-5'>
                 {pedidoStatus ? (
                     <>
-                    <h1 className='fw-bold'>Nº {pedidoNumero}</h1>
-                    <h2 className='fw-bold'>A TRIBULAÇÃO TERMINOU!</h2>
-                    <p style={{fontSize:'large'}}>Já podes ir buscar o teu pedido.</p>
+                        <h1 className='fw-bold'>Nº {pedidoNumero}</h1>
+                        <h2 className='fw-bold'>A TRIBULAÇÃO TERMINOU!</h2>
+                        <p style={{ fontSize: 'large' }}>Já podes ir buscar o teu pedido.</p>
                     </>
                 ) : (
                     <>
-                    <lord-icon
-                    src={icons[currentIconIndex]}
-                    trigger="loop"
-                    delay="1500"
-                    style={{ width: "100px", height: "100px" }}
-                    ></lord-icon>
-                    <p style={{fontSize:'large'}}><strong style={{fontSize:'x-large'}}>A fazer</strong><br/>{frases[currentIndex]}</p>
+                        <lord-icon
+                            src={icons[currentIconIndex]}
+                            trigger="loop"
+                            delay="1500"
+                            style={{ width: "100px", height: "100px" }}
+                        ></lord-icon>
+                        <p style={{ fontSize: 'large' }}><strong style={{ fontSize: 'x-large' }}>A fazer</strong><br />{frases[currentIndex]}</p>
                     </>
                 )}
             </div>
