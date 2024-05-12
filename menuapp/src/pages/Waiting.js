@@ -14,6 +14,7 @@ function Waiting() {
     const [currentIconIndex, setCurrentIconIndex] = useState(0);
     const [loading, setLoading] = useState(true);  // Start with loading true
     const [is404, setIs404] = useState(false);
+    const [dotCount, setDotCount] = useState(0);
     const [error, setError] = useState(null);
     const [frases, setFrases] = useState([
         'Quem espera sempre alcança.',
@@ -112,6 +113,13 @@ function Waiting() {
         }
     }, [pedidoNumero, frases.length, icons.length]);
 
+    useEffect(() => {
+        const dotInterval = setInterval(() => {
+            setDotCount((prevCount) => (prevCount + 1) % 4);
+        }, 1000);
+        return () => clearInterval(dotInterval);
+    }, []);
+
     if (loading) {
         return (
             <FullScreenSpinner/>
@@ -159,7 +167,7 @@ function Waiting() {
                             delay="1500"
                             style={{ width: "100px", height: "100px" }}
                         ></lord-icon>
-                        <p style={{ fontSize: 'large' }}><strong style={{ fontSize: 'x-large' }}>A fazer</strong><br />{frases[currentIndex]}</p>
+                        <p style={{ fontSize: 'large' }}><strong style={{ fontSize: 'x-large' }}>A fazer{'.'.repeat(dotCount)}</strong><br />{frases[currentIndex]}</p>
                         <Link to={'/'}><a className='text-dark'>Voltar</a></Link>
                     </>
                 )}
