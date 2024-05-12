@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styles from './Waiting.module.css';
+import FullScreenSpinner from '../components/FullScreenSpinner';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
@@ -8,10 +9,11 @@ function Waiting() {
     const location = useLocation();
     const pedidoNumero = location.state?.pedidoNumero;
 
-    const [pedidoStatus, setPedidoStatus] = useState(false);
+    const [pedidoStatus, setPedidoStatus] = useState(null);  // Initially null to indicate not yet loaded
     const [currentIndex, setCurrentIndex] = useState(0);
     const [currentIconIndex, setCurrentIconIndex] = useState(0);
-    const [is404, setIs404] = useState(false); // New state for 404
+    const [loading, setLoading] = useState(true);  // Start with loading true
+    const [is404, setIs404] = useState(false);
     const [error, setError] = useState(null);
     const [frases, setFrases] = useState([
         'Quem espera sempre alcança.',
@@ -48,7 +50,6 @@ function Waiting() {
         'Até Noé construiu a arca mais rápido',
         'Agora entendo que um dia pode ser como mil anos',
         'Esperei confiantemente no Senhor, e o meu pedido chegou'
-
     ]);
     const [icons, setIcons] = useState([
         "https://cdn.lordicon.com/ozzqxurw.json",
@@ -61,17 +62,15 @@ function Waiting() {
         "https://cdn.lordicon.com/qvyppzqz.json"
     ]);
 
-     // Function to shuffle an array
-     const shuffle = (array) => {
+    const shuffle = (array) => {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]]; // swap elements
+            [array[i], array[j]] = [array[j], array[i]];
         }
         return array;
     };
 
     useEffect(() => {
-        // Shuffle phrases and icons initially
         setFrases(shuffle([...frases]));
         setIcons(shuffle([...icons]));
 
@@ -80,6 +79,7 @@ function Waiting() {
                 const response = await fetch(`${API_URL}/pedidos/status/${pedidoNumero}`);
                 if (response.status === 404) {
                     setIs404(true); // Set 404 error state
+                    setLoading(false);  // Stop showing loading
                     return;
                 }
                 if (!response.ok) {
@@ -93,32 +93,53 @@ function Waiting() {
                     setCurrentIndex((prevIndex) => (prevIndex + 1) % frases.length);
                     setCurrentIconIndex((prevIndex) => (prevIndex + 1) % icons.length);
                 }
+                setLoading(false);  // Data fetched
             } catch (error) {
                 setError(error.message);
+                setLoading(false);
             }
         };
 
         if (pedidoNumero) {
             fetchStatus();
-            const interval = setInterval(fetchStatus, 10000);
-            return () => clearInterval(interval);
+            let interval;
+            if (!pedidoStatus) {
+                interval = setInterval(fetchStatus, 10000);
+            }
+            return () => {
+                if (interval) clearInterval(interval);
+            };
         }
     }, [pedidoNumero, frases.length, icons.length]);
 
-    // Handle 404 page rendering
+    if (loading) {
+        return (
+            <FullScreenSpinner/>
+        );
+    }
+
     if (is404) {
         return (
             <div className={styles.animatedGradient}>
                 <div className='text-center p-5'>
                     <h2 className='fw-bold'>Pedido não encontrado</h2>
                     <p style={{ fontSize: 'large' }}>Por favor, verifique o número do pedido e tente novamente.</p>
-                    <Link to={'/'}><button className='btn btn-dark'>Voltar</button></Link>
+                    <Link to={'/'}><a className='text-dark'>Voltar</a></Link>
                 </div>
             </div>
         );
     }
 
-    if (error) return <div>Error: {error}</div>;
+    if (error) {
+        return (
+            <div className={styles.animatedGradient}>
+                <div className='text-center p-5'>
+                    <p>Error: {error}</p>
+                    <Link to={'/'}><a className='text-dark'>Voltar</a></Link>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className={styles.animatedGradient}>
@@ -128,6 +149,7 @@ function Waiting() {
                         <h1 className='fw-bold'>Nº {pedidoNumero}</h1>
                         <h2 className='fw-bold'>A TRIBULAÇÃO TERMINOU!</h2>
                         <p style={{ fontSize: 'large' }}>Já podes ir buscar o teu pedido.</p>
+                        <Link to={'/'}><a className='text-dark'>Voltar</a></Link>
                     </>
                 ) : (
                     <>
@@ -138,6 +160,7 @@ function Waiting() {
                             style={{ width: "100px", height: "100px" }}
                         ></lord-icon>
                         <p style={{ fontSize: 'large' }}><strong style={{ fontSize: 'x-large' }}>A fazer</strong><br />{frases[currentIndex]}</p>
+                        <Link to={'/'}><a className='text-dark'>Voltar</a></Link>
                     </>
                 )}
             </div>

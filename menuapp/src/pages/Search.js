@@ -3,10 +3,13 @@ import { useNavigate } from 'react-router-dom';
 
 function Search() {
     const [numero, setNumero] = useState('');
+    const [isButtonDisabled, setIsButtonDisabled] = useState(true);
     const navigate = useNavigate(); // Use navigate for programmatic navigation
 
     const handleChangeNumero = (event) => {
-        setNumero(event.target.value);
+        const value = event.target.value;
+        setNumero(value);
+        setIsButtonDisabled(value === ''); // Disable button if input is empty
     };
 
     useEffect(() => {
@@ -43,9 +46,23 @@ function Search() {
                         onChange={handleChangeNumero}
                         value={numero}
                         placeholder='Nº do pedido'
-                        type='number'
+                        onKeyDown={(event) => {
+                            // List of allowed key values besides numeric digits
+                            const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab', 'Delete'];
+                          
+                            // Check if the key pressed is not a digit and not an allowed key
+                            if (!/[0-9]/.test(event.key) && !allowedKeys.includes(event.key)) {
+                              event.preventDefault();
+                            }
+                          }}
                     />
-                    <button className="btn btn-dark mt-4" onClick={handleSearch}>Procurar</button>
+                    <button
+                        className="btn btn-dark mt-4"
+                        onClick={handleSearch}
+                        disabled={isButtonDisabled}
+                    >
+                        Procurar
+                    </button>
                 </div>
             </div>
         </>
