@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import FullScreenSpinner from "../components/FullScreenSpinner";
+import { Link } from 'react-router-dom';
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 function Pedidos() {
   const [pedidos, setPedidos] = useState([]);
