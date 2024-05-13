@@ -67,6 +67,7 @@ var deleteIcon = <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" 
     return (
         <div className="centro d-flex align-items-center flex-column justify-content-center">
             <div className="card col-md-6 col-12 p-3">
+            <Link to={'/home'}><a className='text-dark'>Voltar</a></Link>
                 <h3>Produtos</h3>
                 <ToggleVisibility 
                     showText={editProductId ? "Editar Produto" : "Adicionar Produto"}

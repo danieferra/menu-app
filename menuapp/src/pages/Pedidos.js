@@ -67,6 +67,7 @@ function Pedidos() {
   return (
     <div className="centro d-flex align-items-center flex-column justify-content-center">
       <div className="card col-md-6 col-12 p-3">
+      <Link to={'/home'}><a className='text-dark'>Voltar</a></Link>
         <h2>Pedidos</h2>
         <div className="holder">
             <table className="table table-striped">
