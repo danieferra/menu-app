@@ -23,7 +23,7 @@ body{
 
 .holder{
   overflow: scroll;
-    height: 80vh;
+    height: 75vh;
 }
 .form-control:focus{
   box-shadow:none!important;

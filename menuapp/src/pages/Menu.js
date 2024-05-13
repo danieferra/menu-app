@@ -134,9 +134,9 @@ function Menu() {
                                 <li key={product._id} className="list-group-item" style={{ backgroundColor: index % 2 === 0 ? 'white' : '#e9e9f9' }}>
                                     {product.nome} - €{product.preco.toFixed(2)}
                                     <div className='buttons' style={{ float: 'right' }}>
-                                        <button className='b' onClick={() => updateQuantity(product._id, -1)}>-</button>
+                                        <div className='b' onClick={() => updateQuantity(product._id, -1)}>-</div>
                                         <div style={{ display: 'inline-block', width: '18px', textAlign: 'center' }}>{product.quantity}</div>
-                                        <button className='b' onClick={() => updateQuantity(product._id, 1)}>+</button>
+                                        <div className='b' onClick={() => updateQuantity(product._id, 1)}>+</div>
                                     </div>
                                 </li>
                             ))}
